@@ -1,0 +1,34 @@
+name: Print Event
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+  merge_group:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a set of commands using the runners shell
+      - name: Display event details
+        run: |
+          echo '::debug::ref is ${{github.ref}}'
+          echo '::debug::ref_name is ${{github.ref_name}}'
+          echo '::debug::head_ref is ${{github.head_ref}}'
+          echo '::debug::sha is ${{github.sha}}'
+          echo '::debug::job workflow sha is ${{github.job_workflow_sha}}'
+          echo '::debug::event name is ${{github.event_name}}'
+          echo '::debug::event path is ${{github.event_path}}'
+          echo '::group::event content'
+          cat ${{github.event_path}}
+          echo '::endgroup::'
+
+      # Runs a single command using the runners shell
+      - name: Hello world
+        run: echo Hello, world!
